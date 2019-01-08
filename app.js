@@ -41,8 +41,8 @@ app.post('/addUser', function (req, res) {
     fs.readFile( __dirname + "/" + "users.json", 'utf8', function (err, data) {
         data = JSON.parse( data );
         var size_data = parseInt(Object.keys(data).length)+1;
-        data["user"+size_data] = user;
-        console.log( data );
+        data["user"+size_data] = user[0];
+        console.log( user );
         res.end( JSON.stringify(data));
     });
 });
