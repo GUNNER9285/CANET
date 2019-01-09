@@ -111,8 +111,12 @@ exports.addData = function(req, res) {
 };
 exports.editDataById = function(req, res) {
     var id = parseInt(req.params.teamID);
-    db.temperatures.findOne({
+    db.temperatures.update({
         teamID: id
+    },{
+        $set:{
+            temp: req.body['temp']
+        }
     }, function (err, docs) {
         if (docs != null) {
             console.log('found', JSON.stringify(docs));
