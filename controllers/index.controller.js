@@ -8,7 +8,8 @@ var fs = require("fs"),
 
 
 exports.getIndex = function(req, res) {
-    res.send("Team: CANET");
+    var msg = "Team: CANET "+ Date.now;
+    res.send(msg);
 };
 
 exports.getListUsers = function(req, res) {
@@ -96,8 +97,17 @@ exports.receiveData = function(req, res) {
         var sensor = parseInt(payload[p1]+payload[p2]);
         if(sensor == 67){
             var tmp = payload[p1+2]+payload[p2+2]+payload[p1+4]+payload[p2+4];
-            value = parseInt(tmp, 16);
+            value = parseInt(tmp, 16)/10;
             console.log('Value: ',value);
+
+            db.temperatures.insert({
+                teamID: TeamID,
+                temp: value,
+                updatedAt: Date.now
+            }, function (err, docs) {
+                console.log(docs);
+                res.send(docs);
+            });
         }
 
     }
