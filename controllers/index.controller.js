@@ -88,6 +88,6 @@ exports.receiveData = function(req, res) {
         if (hexTeamID.length % 2) {
             TeamID = '0' + hexTeamID;
         }
-        console(hexTeamID);
+        console.log(hexTeamID);
     }
 };
