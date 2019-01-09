@@ -96,7 +96,7 @@ exports.receiveData = function(req, res) {
         var sensor = parseInt(payload[p1]+payload[p2]);
         if(sensor == 67){
             value = parseInt(sensor, 16);
-            console(value);
+            console.log('Value: ',value);
         }
 
     }
