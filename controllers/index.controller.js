@@ -78,5 +78,5 @@ exports.deleteDataById = function(req, res) {
     res.send("Team: CANET");
 };
 exports.receiveData = function(req, res) {
-    console.log(req.body);
+    console.log(req.body['DevEUI_uplink']);
 };
