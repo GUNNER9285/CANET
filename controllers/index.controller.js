@@ -79,7 +79,7 @@ exports.deleteDataById = function(req, res) {
 };
 exports.receiveData = function(req, res) {
     var payload = req.body['DevEUI_uplink']['payload_hex'];
-    console(payload);
+    console.log(payload);
     var hexTeamID = 0;
     var TeamID = 0;
     if(payload[2] == '0' && payload[3] == '1'){
