@@ -82,11 +82,22 @@ exports.receiveData = function(req, res) {
     console.log(payload);
     var hexTeamID = 0;
     var TeamID = 0;
+    var p1 = 2;
+    var p2 = 3;
+    var value = 0;
     if(payload[2] == '0' && payload[3] == '1'){
-        var p1 = 2+2;
-        var p2 = 3+2;
+        p1 = p1+2;
+        p2 = p2+2;
         hexTeamID = parseInt(payload[p1]+payload[p2]);
-        var TeamID = parseInt(hexTeamID, 16);
-        console.log(TeamID);
+        TeamID = parseInt(hexTeamID, 16);
+        console.log('TeamID: ',TeamID);
+        p1 = p1+4;
+        p2 = p2+4;
+        var sensor = parseInt(payload[p1]+payload[p2]);
+        if(sensor == 67){
+            value = parseInt(sensor, 16);
+            console(value);
+        }
+
     }
 };
