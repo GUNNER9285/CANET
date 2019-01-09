@@ -1,12 +1,17 @@
 var express = require('express'),
-    bodyParser = require('body-parser');
+    bodyParser = require('body-parser'),
+    mongojs = require('./db'),
+    mongoose = require('mongoose');
 
-var app = express();
+//var db = mongojs.connect;
+var app = express(),
+    uri = 'mongodb://localhost/tgrsu13',
+    option = {"auth":{"user":"gun", "password":"gun"}},
+    db = mongoose.connect(uri, option);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 
-//require('./app/models/index.model');
+require('./models/temperature.model');
 require('./routes/index.route')(app);
 
 // catch 404 and forward to error handler

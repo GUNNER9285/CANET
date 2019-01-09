@@ -1,4 +1,6 @@
-var fs = require("fs");;
+var fs = require("fs");
+var db = require('../models/DB');
+var temperature = mongoose.model('Temperature');
 
 exports.getIndex = function(req, res) {
     res.send("Team: CANET");
@@ -52,4 +54,16 @@ exports.deleteUser = function(req, res) {
         console.log( data );
         res.end( JSON.stringify(data));
     });
+};
+
+exports.showData = function (req, res) {
+    temperature.find({}).exec(function (err, temperatures) {
+        if (err) {
+            console.log("Error:", err);
+        }
+        else {
+            res.send(temperatures);
+        }
+    });
+
 };
