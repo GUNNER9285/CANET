@@ -6,8 +6,11 @@ var express = require('express'),
 //var db = mongojs.connect;
 var app = express();
     uri = 'mongodb://localhost/tgrsu13',
-    option = {"auth":{user:"gun", password:"gun"}},
-    db = mongoose.connect(uri, option);
+    option = {"auth":{user:"gun", password:"gun"}, },
+    db = mongoose.connect(uri, {
+        user: 'gun',
+        pass: 'gun'
+    });
     //db = mongoose.connect(uri);
 
 app.use(bodyParser.json());
