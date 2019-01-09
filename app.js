@@ -6,7 +6,7 @@ var express = require('express'),
 //var db = mongojs.connect;
 var app = express(),
     uri = 'mongodb://localhost/tgrsu13',
-    option = {"auth":{"user":"gun", "password":"gun"}, "useNewUrlParser": true},
+    option = {"auth":{"user":"gun", "password":"gun"}},
     db = mongoose.connect(uri, option);
     //db = mongoose.connect(uri);
 
@@ -33,11 +33,9 @@ app.use(function(err, req, res, next) {
     res.render('error');
 });
 
-var server = app.listen(3000, function () {
-    var port = server.address().port;
-
-    console.log("Server running at ", port);
-});
+var port = process.env.PORT||8080;
+app.listen(port);
+console.log("Server running at ", port);
 
 module.exports = app;
 
