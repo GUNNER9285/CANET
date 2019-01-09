@@ -62,7 +62,7 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.showData = function (req, res) {
-    db.users.find(function (err, docs) {
+    db.test.find(function (err, docs) {
         console.log(docs);
         res.send(docs);
     });
