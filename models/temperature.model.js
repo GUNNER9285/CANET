@@ -2,17 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var TemperatureShema = new Schema({
-    latitude: {
-        type: Number,
-        require: true
+    teapID: {
+        type: Number
     },
-    longitude: {
-        type: Number,
-        require: true
+    temp: {
+        type: Number
     },
-    label: {
-        type: Number,
-        require: true
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
 });
 

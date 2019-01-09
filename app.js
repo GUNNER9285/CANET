@@ -7,7 +7,7 @@ var express = require('express'),
 var app = express(),
     uri = 'mongodb://localhost/tgrsu13',
     option = {"auth":{"user":"gun", "password":"gun"}},
-    db = mongoose.connect(uri, option);
+    db = mongoose.connect(uri, option,  { useNewUrlParser: true });
     //db = mongoose.connect(uri);
 
 app.use(bodyParser.json());

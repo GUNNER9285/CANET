@@ -67,5 +67,17 @@ exports.showData = function (req, res) {
             res.send(temperatures);
         }
     });
+};
 
+exports.addData = function(req, res) {
+    res.send("Team: CANET");
+};
+exports.editDataById = function(req, res) {
+    res.send("Team: CANET");
+};
+exports.deleteDataById = function(req, res) {
+    res.send("Team: CANET");
+};
+exports.receiveData = function(req, res) {
+    res.send("Team: CANET");
 };

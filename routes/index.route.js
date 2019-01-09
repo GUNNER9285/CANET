@@ -48,5 +48,14 @@ module.exports = function(app) {
 
     app.route('/showData')
         .get(index.showData);
+    app.route('/addData')
+        .post(index.addData);
+    app.route('/editData/:teamID')
+        .put(index.editDataById);
+    app.route('/deleteData/:teamID')
+        .delete(index.deleteDataById);
+
+    app.route('/receiveData')
+        .post(index.receiveData);
 
 };
