@@ -78,6 +78,16 @@ exports.deleteDataById = function(req, res) {
     res.send("Team: CANET");
 };
 exports.receiveData = function(req, res) {
-    //var json = JSON.parse(req.body);
-    console.log(req.body['DevEUI_uplink']['payload_hex']);
+    var payload = req.body['DevEUI_uplink']['payload_hex'];
+    var hexTeamID = 0;
+    var TeamID = 0;
+    if(payload[2] == '0' && payload[3] == '1'){
+        var p1 = 2+2;
+        var p2 = 3+2;
+        hexTeamID = parseInt(payload[p1]+payload[p2]).toString(16);
+        if (hexTeamID.length % 2) {
+            TeamID = '0' + hexString;
+        }
+        console(hexTeamID);
+    }
 };
