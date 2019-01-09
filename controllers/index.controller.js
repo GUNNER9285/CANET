@@ -1,4 +1,6 @@
-var fs = require("fs");
+var fs = require("fs"),
+    mongoose = require('mongoose');
+
 var db = require('../models/DB');
 var temperature = mongoose.model('Temperature');
 

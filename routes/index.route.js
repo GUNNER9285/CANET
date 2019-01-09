@@ -46,5 +46,7 @@ module.exports = function(app) {
     app.route('/deleteUser/:id')
         .delete(index.deleteUser);
 
+    app.route('/showData')
+        .get(index.showData);
 
 };
