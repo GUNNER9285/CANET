@@ -6,7 +6,7 @@ var express = require('express'),
 //var db = mongojs.connect;
 var app = express();
     uri = 'mongodb://localhost/tgrsu13',
-    option = {"auth":{user:"gun", pass:"gun"}},
+    option = {"auth":{user:"gun", password:"gun"}},
     db = mongoose.connect(uri, option);
     //db = mongoose.connect(uri);
 
