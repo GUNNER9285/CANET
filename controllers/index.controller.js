@@ -86,8 +86,7 @@ exports.receiveData = function(req, res) {
 
             db.temperatures.insert({
                 teamID: TeamID,
-                temp: value,
-                updatedAt: Date.now()
+                temp: value
             }, function (err, docs) {
                 console.log(docs);
                 res.send(docs);
@@ -111,7 +110,17 @@ exports.addData = function(req, res) {
     });
 };
 exports.editDataById = function(req, res) {
-    res.send("Team: CANET");
+    var id = req.params.id;
+    db.users.findOne({
+        teamID: id
+    }, function (err, docs) {
+        if (docs != null) {
+            console.log('found', JSON.stringify(docs));
+            res.json(docs);
+        } else {
+            res.send('User not found');
+        }
+    });
 };
 exports.deleteDataById = function(req, res) {
     res.send("Team: CANET");
