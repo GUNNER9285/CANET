@@ -3,14 +3,11 @@ var express = require('express'),
     mongojs = require('./db'),
     mongoose = require('mongoose');
 
-//var db = mongojs.connect;
+var db = mongojs.connect;
 var app = express();
-    uri = 'mongodb://localhost/tgrsu13',
-    option = {"auth":{user:"gun", password:"gun"}, },
-    db = mongoose.connect(uri, {
-        user: 'gun',
-        pass: 'gun'
-    });
+    //uri = 'mongodb://localhost/tgrsu13',
+    //option = {"auth":{"user":"gun", "password":"gun"}},
+    //db = mongoose.connect(uri, option);
     //db = mongoose.connect(uri);
 
 app.use(bodyParser.json());

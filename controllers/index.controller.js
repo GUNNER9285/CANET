@@ -1,8 +1,11 @@
 var fs = require("fs"),
-    mongoose = require('mongoose');
+    mongoose = require('mongoose'),
+    mongojs = require('../db'),
+    db = mongojs.connect;
 
-var db = require('../models/DB');
-var temperature = mongoose.model('Temperature');
+//var db = require('../models/DB');
+//var temperature = mongoose.model('Temperature');
+
 
 exports.getIndex = function(req, res) {
     res.send("Team: CANET");
@@ -59,13 +62,9 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.showData = function (req, res) {
-    temperature.find({}).exec(function (err, temperatures) {
-        if (err) {
-            console.log("Error:", err);
-        }
-        else {
-            res.send(temperatures);
-        }
+    db.users.find(function (err, docs) {
+        console.log(docs);
+        res.send(docs);
     });
 };
 
