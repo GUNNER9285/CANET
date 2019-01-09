@@ -3,5 +3,5 @@ var fs = require("fs"),
     db = mongojs.connect;
 
 exports.getCayenne = function(req, res) {
-    res.send(req.body);
+    console.log(req.body);
 };
