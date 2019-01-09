@@ -1,11 +1,6 @@
 var fs = require("fs"),
-    mongoose = require('mongoose'),
     mongojs = require('../db'),
     db = mongojs.connect;
-
-//var db = require('../models/DB');
-//var temperature = mongoose.model('Temperature');
-
 
 exports.getIndex = function(req, res) {
     var msg = "Team: CANET "+ Date.now;

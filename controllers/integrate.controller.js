@@ -3,5 +3,6 @@ var fs = require("fs"),
     db = mongojs.connect;
 
 exports.getCayenne = function(req, res) {
-    console.log(req.body);
+    var payload = req.body['DevEUI_uplink']['payload_hex'];
+    console.log(payload);
 };
