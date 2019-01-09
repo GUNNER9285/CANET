@@ -110,7 +110,7 @@ exports.addData = function(req, res) {
     });
 };
 exports.editDataById = function(req, res) {
-    var id = parseInt(req.params.id);
+    var id = parseInt(req.params.teamID);
     db.temperatures.findOne({
         teamID: id
     }, function (err, docs) {
@@ -123,7 +123,7 @@ exports.editDataById = function(req, res) {
     });
 };
 exports.deleteDataById = function(req, res) {
-    var id = parseInt(req.params.id);
+    var id = parseInt(req.params.teamID);
     db.temperatures.remove({
         teamID: id
     }, function (err, docs) {
