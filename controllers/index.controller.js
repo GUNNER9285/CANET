@@ -111,7 +111,7 @@ exports.addData = function(req, res) {
 };
 exports.editDataById = function(req, res) {
     var id = parseInt(req.params.id);
-    db.users.findOne({
+    db.temperatures.findOne({
         teamID: id
     }, function (err, docs) {
         if (docs != null) {
@@ -124,7 +124,7 @@ exports.editDataById = function(req, res) {
 };
 exports.deleteDataById = function(req, res) {
     var id = parseInt(req.params.id);
-    db.users.remove({
+    db.temperatures.remove({
         teamID: id
     }, function (err, docs) {
         console.log(docs);
