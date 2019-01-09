@@ -87,6 +87,6 @@ exports.receiveData = function(req, res) {
         var p2 = 3+2;
         hexTeamID = parseInt(payload[p1]+payload[p2]);
         var TeamID = parseInt(hexTeamID, 16);
-        console.log(hexTeamID);
+        console.log(TeamID);
     }
 };
