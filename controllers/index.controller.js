@@ -62,7 +62,7 @@ exports.deleteUser = function(req, res) {
 };
 
 exports.showData = function (req, res) {
-    db.test.find(function (err, docs) {
+    db.temperatures.find(function (err, docs) {
         console.log(docs);
         res.send(docs);
     });
@@ -78,5 +78,5 @@ exports.deleteDataById = function(req, res) {
     res.send("Team: CANET");
 };
 exports.receiveData = function(req, res) {
-    res.send("Team: CANET");
+    console.log(req.body);
 };
