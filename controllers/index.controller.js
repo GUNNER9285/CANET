@@ -62,22 +62,6 @@ exports.deleteUser = function(req, res) {
     });
 };
 
-exports.showData = function (req, res) {
-    db.temperatures.find(function (err, docs) {
-        console.log(docs);
-        res.send(docs);
-    });
-};
-
-exports.addData = function(req, res) {
-    res.send("Team: CANET");
-};
-exports.editDataById = function(req, res) {
-    res.send("Team: CANET");
-};
-exports.deleteDataById = function(req, res) {
-    res.send("Team: CANET");
-};
 exports.receiveData = function(req, res) {
     var payload = req.body['DevEUI_uplink']['payload_hex'];
     console.log(payload);
@@ -103,12 +87,32 @@ exports.receiveData = function(req, res) {
             db.temperatures.insert({
                 teamID: TeamID,
                 temp: value,
-                updatedAt: Date.now
+                updatedAt: Date.now()
             }, function (err, docs) {
                 console.log(docs);
                 res.send(docs);
             });
         }
-
     }
+};
+
+exports.showData = function (req, res) {
+    db.temperatures.find(function (err, docs) {
+        console.log(docs);
+        res.send(docs);
+    });
+};
+
+exports.addData = function(req, res) {
+    var value = req.body;
+    db.temperatures.insert(value, function (err, docs) {
+        console.log(docs);
+        res.send(docs);
+    });
+};
+exports.editDataById = function(req, res) {
+    res.send("Team: CANET");
+};
+exports.deleteDataById = function(req, res) {
+    res.send("Team: CANET");
 };
