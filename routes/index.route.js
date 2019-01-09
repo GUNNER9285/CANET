@@ -46,6 +46,8 @@ module.exports = function(app) {
     app.route('/deleteUser/:id')
         .delete(index.deleteUser);
 
+    app.route('/receiveData')
+        .post(index.receiveData);
     app.route('/showData')
         .get(index.showData);
     app.route('/addData')
@@ -54,8 +56,5 @@ module.exports = function(app) {
         .put(index.editDataById);
     app.route('/deleteData/:teamID')
         .delete(index.deleteDataById);
-
-    app.route('/receiveData')
-        .post(index.receiveData);
 
 };

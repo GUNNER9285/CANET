@@ -1,23 +1,19 @@
 var express = require('express'),
     bodyParser = require('body-parser'),
-    mongojs = require('./db'),
-    mongoose = require('mongoose');
+    mongojs = require('./db');
 
 var db = mongojs.connect;
 var app = express();
-    //uri = 'mongodb://localhost/tgrsu13',
-    //option = {"auth":{"user":"gun", "password":"gun"}},
-    //db = mongoose.connect(uri, option);
-    //db = mongoose.connect(uri);
 
 app.use(bodyParser.json());
 
 require('./models/temperature.model');
 require('./routes/index.route')(app);
+require('./routes/integrate.route')(app);
 
 var port = process.env.PORT||3000;
 app.listen(port);
-console.log("Server running at ", port);
+console.log("Server running at port:"+ port);
 
 module.exports = app;
 

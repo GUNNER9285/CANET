@@ -1,4 +1,3 @@
-
 var mongojs = require('mongojs');
 
 var databaseUrl = 'mongodb://localhost/tgr2019';
