@@ -110,7 +110,7 @@ exports.addData = function(req, res) {
     });
 };
 exports.editDataById = function(req, res) {
-    var id = req.params.id;
+    var id = parseInt(req.params.id);
     db.users.findOne({
         teamID: id
     }, function (err, docs) {
@@ -123,5 +123,11 @@ exports.editDataById = function(req, res) {
     });
 };
 exports.deleteDataById = function(req, res) {
-    res.send("Team: CANET");
+    var id = parseInt(req.params.id);
+    db.users.remove({
+        teamID: id
+    }, function (err, docs) {
+        console.log(docs);
+        res.send(docs);
+    });
 };
