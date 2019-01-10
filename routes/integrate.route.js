@@ -7,12 +7,12 @@ module.exports = function(app) {
 
     // Intelligent Monitoring System
     app.route('/get/beacon')
-        .get(integrate.getBeacon);
+        .post(integrate.getBeacon);
     app.route('/save/beacon')
         .post(integrate.saveBeacon);
     app.route('/show/beacon')
         .get(integrate.showBeacon);
     app.route('/delete/beacon')
-        .get(integrate.deleteBeaconById);
+        .delete(integrate.deleteBeacon);
 
 };

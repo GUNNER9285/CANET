@@ -66,7 +66,7 @@ exports.showBeacon = function(req, res) {
     });
 };
 
-exports.deleteBeaconById = function(req, res) {
+exports.deleteBeacon = function(req, res) {
     db.beaconData.remove({}, function (err, docs) {
         console.log(docs);
         res.send(docs);
