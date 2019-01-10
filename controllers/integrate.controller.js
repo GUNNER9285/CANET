@@ -82,7 +82,7 @@ exports.deleteBeacon = function(req, res) {
     });
 };
 
-exports.readCsv = function(req, res){
+exports.showCsv = function(req, res){
 
 };
 
