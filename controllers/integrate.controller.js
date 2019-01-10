@@ -22,10 +22,6 @@ exports.saveBeacon = function(req, res) {
         db.beaconData.find({
             date: datetime[0]
         }, function (err, docs) {
-            console.log(docs);
-            /*
-            console.log(docs.length);
-
             if (docs.length != 0) {
                 console.log('found');
                 var hours = parseInt(datetime[1][0]+datetime[1][1]);
@@ -66,7 +62,6 @@ exports.saveBeacon = function(req, res) {
                     res.send(docs);
                 });
             }
-            */
         });
     } else{
         res.send('You leave.');
@@ -106,3 +101,17 @@ async function readCSV() {
             });
     });
 }
+
+exports.demoBeacon = function (req, res) {
+    var times = ["0","0","0","0","0","0",
+                "0","0","0","0","0","0",
+                "0","0","0","1","0","0",
+                "0","0","0","0","0","0"];
+    db.beaconData.insert({
+        date: '2019-1-4',
+        time: times
+    }, function (err, docs) {
+        console.log(docs);
+        res.send(docs);
+    });
+};
