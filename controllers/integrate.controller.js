@@ -85,7 +85,7 @@ exports.saveBeacon = function(req, res) {
             "P-OUT": 0,
             Timestamp: datetime
         }, function (err, docs) {
-            db.beaconCount.find({}, function (err, docs) {
+            db.beaconCount.find({"status": "enter"}, function (err, docs) {
                 var count = parseInt(docs[0]["COUNT-IN"]);
                 count++;
                 db.beaconCount.update({
@@ -94,8 +94,14 @@ exports.saveBeacon = function(req, res) {
                     $set: {
                         "COUNT-IN": count
                     }
-                }, function (err, docs) {
-                    res.send(docs);
+                }, async function (err, docs) {
+                    await getEnter();
+                    await getLeave();
+                    var json = {
+                        "enter": p_in,
+                        "leave": p_out
+                    };
+                    res.json(json);
                 });
             })
         });
@@ -106,7 +112,7 @@ exports.saveBeacon = function(req, res) {
             "P-OUT": 1,
             Timestamp: datetime
         }, function (err, docs) {
-            db.beaconCount.find({}, function (err, docs) {
+            db.beaconCount.find({"status": "leave"}, function (err, docs) {
                 var count = parseInt(docs[1]["COUNT-OUT"]);
                 count++;
                 db.beaconCount.update({
@@ -115,8 +121,14 @@ exports.saveBeacon = function(req, res) {
                     $set: {
                         "COUNT-OUT": count
                     }
-                }, function (err, docs) {
-                    res.send(docs);
+                }, async function (err, docs) {
+                    await getEnter();
+                    await getLeave();
+                    var json = {
+                        "enter": p_in,
+                        "leave": p_out
+                    };
+                    res.json(json);
                 });
             })
         });
@@ -192,13 +204,7 @@ function getDateTime() {
 var p_in = 0;
 var p_out = 0;
 exports.readCountBeacon = async function(req, res) {
-    await getEnter();
-    await getLeave();
-    var json = {
-        "enter": p_in,
-        "leave": p_out
-    };
-    res.json(json);
+
 };
 async function getEnter(){
     return new Promise(function (resolve, reject) {
