@@ -3,5 +3,7 @@ module.exports = function(app) {
 
     app.route('/get/cayenne')
         .post(integrate.getCayenne);
+    app.route('/get/beacon')
+        .post(integrate.getBeacon);
 
 };
