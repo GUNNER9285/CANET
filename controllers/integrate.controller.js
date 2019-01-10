@@ -16,9 +16,13 @@ exports.saveCayenne = function(req, res) {
     var humi = 0;
     var pIn = 0;
     var pOut = 0;
+    var Timestamp = getDateTime();
+    console.log("Timestamp: ", Timestamp);
+    console.log("Payload_Hex: ", payload);
     while (true){
         if(pt == payload.length-1 || pt == payload.length-2
-            || pt == payload.length-3 || pt == payload.length-4){
+            || pt == payload.length-3 || pt == payload.length-4
+            || pt >= payload.length){
             break;
         }
         pt = pt + 2;
@@ -32,20 +36,29 @@ exports.saveCayenne = function(req, res) {
             humi = parseInt(hex, 16)/10;
             pt = pt+4;
         }
-
-        var json = {
-            temp: temp,
-            humi: humi
-        };
-        res.json(json);
+        else if(pt == '0' && pt+1 == '1'){
+            var hex = payload[pt+2]+payload[pt+3];
+            pIn = parseInt(hex, 16)/10;
+            pt = pt+2;
+        }
+        else if(pt == '0' && pt+1 == '2'){
+            var hex = payload[pt+2]+payload[pt+3];
+            pOut = parseInt(hex, 16)/10;
+            pt = pt+2;
+        }
     }
+    var json = {
+        temp: temp,
+        humi: humi,
+        Timestamp: Timestamp
+    };
+    res.json(json);
 };
 
 exports.getBeacon = function(req, res) {
     var beacon = req.body;
     console.log(beacon);
 };
-
 exports.saveBeacon = function(req, res) {
     var beacon = req.body['beacon'];
     var datetime = beacon['datetime'];
@@ -93,7 +106,6 @@ exports.saveBeacon = function(req, res) {
         });
     }
 };
-
 exports.initcountEN = function(req, res){
     db.beaconCount.insert({
         "COUNT-IN": 0,
@@ -102,7 +114,6 @@ exports.initcountEN = function(req, res){
         res.send(docs);
     });
 };
-
 exports.initcountLE = function(req, res){
     db.beaconCount.insert({
         "COUNT-OUT": 0,
@@ -117,7 +128,6 @@ exports.countBeacon = function(req, res){
         res.send(docs);
     });
 };
-
 exports.delCountBeacon = function(req, res){
     db.beaconCount.remove({}, function (err, docs) {
         res.send(docs);
@@ -174,7 +184,6 @@ exports.readCountBeacon = async function(req, res) {
     };
     res.json(json);
 };
-
 async function getEnter(){
     return new Promise(function (resolve, reject) {
         db.beaconCount.find({
@@ -202,7 +211,6 @@ exports.showBeacon = function(req, res) {
         res.send(docs);
     });
 };
-
 exports.deleteBeacon = function(req, res) {
     db.beaconData.remove({}, function (err, docs) {
         console.log(docs);
@@ -225,7 +233,6 @@ exports.showCsv = async function(req, res){
     }
     res.json(times);
 };
-
 async function readCSV() {
     return new Promise(function (resolve, reject) {
         csv
@@ -249,7 +256,6 @@ exports.deleteSchedule = function (req, res) {
         res.send(docs);
     });
 };
-
 exports.createSchedule = function (req, res) {
     var tmp = ["0"];
     var id = req.params.id;
@@ -263,8 +269,6 @@ exports.createSchedule = function (req, res) {
         res.send(docs);
     });
 };
-
-
 
 // Test Async
 var raw = "";

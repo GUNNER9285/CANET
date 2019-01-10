@@ -14,7 +14,6 @@ require('./routes/integrate.route')(app);
 var port = process.env.PORT||3000;
 app.listen(port);
 
-
 setInterval(function(){
     var datetime = getDateTime().split(" ");
     var time = datetime[1].split(":");
