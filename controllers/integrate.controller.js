@@ -41,7 +41,7 @@ exports.saveCayenne = function(req, res) {
             pIn = parseInt(hex, 16)/10;
             pt = pt+2;
         }
-        else if(pt == '0' && pt+1 == '2'){
+        else if(pt == '0' && pt+1 == '1'){
             var hex = payload[pt+2]+payload[pt+3];
             pOut = parseInt(hex, 16)/10;
             pt = pt+2;
