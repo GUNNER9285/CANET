@@ -22,6 +22,9 @@ exports.saveBeacon = function(req, res) {
         db.beaconData.find({
             date: datetime[0]
         }, function (err, docs) {
+            console.log(docs);
+            console.log(docs.length);
+            /*
             if (docs.length != 0) {
                 console.log('found');
                 var hours = parseInt(datetime[1][0]+datetime[1][1]);
@@ -62,6 +65,7 @@ exports.saveBeacon = function(req, res) {
                     res.send(docs);
                 });
             }
+            */
         });
     } else{
         res.send('You leave.');
@@ -81,15 +85,16 @@ exports.deleteBeacon = function(req, res) {
         res.send(docs);
     });
 };
-
-exports.showCsv = function(req, res){
-
+const data = [];
+exports.showCsv = async function(req, res){
+    await readCSV();
+    res.send(data);
 };
 
 async function readCSV() {
     return new Promise(function (resolve, reject) {
         csv
-            .fromPath('THB.csv')
+            .fromPath( __dirname + "/" + 'sanam.csv')
             .on("data", function (str) {
                 data.push(str);
             })
