@@ -14,6 +14,9 @@ exports.getBeacon = function(req, res) {
     console.log(beacon);
 };
 
+var p_in = 0;
+var p_out = 0;
+
 exports.saveBeacon = function(req, res) {
     var beacon = req.body['beacon'];
     console.log(beacon);
@@ -35,12 +38,22 @@ exports.saveBeacon = function(req, res) {
                     $set:{
                         time: times
                     }
-                }, function (err, docs) {
+                },async function (err, docs) {
                     if (docs != null) {
+                        /*
                         console.log('found', JSON.stringify(docs));
                         res.json(docs);
+                        */
+                        await getEnter(datetime);
+                        await getLeave(datetime);
+                        var result = {
+                            datetime: beacon['datetime'],
+                            enter: p_in,
+                            leave: p_out
+                        };
+                        res.json(result);
                     } else {
-                        res.send('User not found');
+                        res.send('Beacon Data Not Found !');
                     }
                 });
             } else {
@@ -58,16 +71,111 @@ exports.saveBeacon = function(req, res) {
                 db.beaconData.insert({
                     date: datetime[0],
                     time: times
-                }, function (err, docs) {
-                    console.log(docs);
-                    res.send(docs);
+                }, async function (err, docs) {
+                    if (docs != null) {
+                        await getEnter(datetime);
+                        await getLeave(datetime);
+                        var result = {
+                            datetime: beacon['datetime'],
+                            enter: p_in,
+                            leave: p_out
+                        };
+                        res.json(result);
+                    } else {
+                        res.send('Beacon Data Not Found !');
+                    }
                 });
             }
         });
     } else{
-        res.send('You leave.');
+        var datetime = beacon['datetime'].split(" "); // [0] = date, [1] = time
+        console.log(datetime);
+        db.beaconData2.find({
+            date: datetime[0]
+        }, function (err, docs) {
+            if (docs.length != 0) {
+                console.log('found');
+                var hours = parseInt(datetime[1][0]+datetime[1][1]);
+                console.log(hours);
+                var times = docs[0]['time'];
+                times[hours] = (parseInt(times[hours]) + 1) + '';
+                db.beaconData2.update({
+                    date: datetime[0]
+                },{
+                    $set:{
+                        time: times
+                    }
+                }, async function (err, docs) {
+                    if (docs != null) {
+                        await getEnter(datetime);
+                        await getLeave(datetime);
+                        var result = {
+                            datetime: beacon['datetime'],
+                            enter: p_in,
+                            leave: p_out
+                        };
+                        res.json(result);
+                    } else {
+                        res.send('Beacon Data Not Found !');
+                    }
+                });
+            } else {
+                console.log('beaconData not found');
+                var hours = parseInt(datetime[1][0]+datetime[1][1]);
+                var times = ["0","0","0","0","0","0",
+                    "0","0","0","0","0","0",
+                    "0","0","0","0","0","0",
+                    "0","0","0","0","0","0"];
+                if(hours[0] == "0"){
+                    times[parseInt(datetime[1][1])] = "1";
+                } else {
+                    times[hours] = "1";
+                }
+                db.beaconData2.insert({
+                    date: datetime[0],
+                    time: times
+                }, async function (err, docs) {
+                    if (docs != null) {
+                        await getEnter(datetime);
+                        await getLeave(datetime);
+                        var result = {
+                            datetime: beacon['datetime'],
+                            enter: p_in,
+                            leave: p_out
+                        };
+                        res.json(result);
+                    } else {
+                        res.send('Beacon Data Not Found !');
+                    }
+                });
+            }
+        });
+
     }
 };
+
+async function getEnter(datetime){
+    return new Promise(function (resolve, reject) {
+        db.beaconData.find({
+            date: datetime[0]
+        }, function (err, docs) {
+            var hour = parseInt(datetime[1][0]+datetime[1][1]);
+            p_in = docs[0]['time'][hour];
+            resolve(p_in);
+        });
+    });
+}
+async function getLeave(datetime){
+    return new Promise(function (resolve, reject) {
+        db.beaconData2.find({
+            date: datetime[0]
+        }, function (err, docs) {
+            var hour = parseInt(datetime[1][0]+datetime[1][1]);
+            p_out = docs[0]['time'][hour];
+            resolve(p_out);
+        });
+    });
+}
 
 exports.showBeacon = function(req, res) {
     db.beaconData.find({}, function (err, docs) {
@@ -116,6 +224,23 @@ exports.getHours = function (req, res) {
     db.beaconData.find({}, function (err, docs) {
         var present = getDateTime(Date.now());
         console.log(present);
+        var date = present.split(" ");
+        var day = 0;
+        if(date[0][date[0].length-2] == "-"){
+            day = parseInt(date[0][date[0].length-1]);
+        }
+        else{
+            day = parseInt(date[0][date[0].length-2]+date[0][date[0].length-1]);
+        }
+        var hour = 0;
+        if(date[1][0] == "0"){
+            hour = parseInt(date[1][1]);
+        } else {
+            hour = parseInt(date[1][0]+date[1][1]);
+        }
+        var x = req.params.X;
+        res.send(x);
+
     });
 };
 
@@ -132,10 +257,12 @@ function getDateTime() {
     return formattedTime;
 }
 
-var why = "";
+
+// Test Async
+var raw = "";
 exports.getRequest = async function (req, res) {
     await readCsv2();
-    console.log(why);
+    console.log(raw);
 };
 
 async function readCsv2() {
@@ -145,8 +272,8 @@ async function readCsv2() {
             url: 'http://202.139.192.79:3000/show/csv',
             method: 'GET'
         }, function(error, response, body){
-            why = JSON.parse(body);
-            resolve(why);
+            raw = JSON.parse(body);
+            resolve(raw);
         });
     });
 }
