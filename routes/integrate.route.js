@@ -4,6 +4,8 @@ module.exports = function(app) {
     // Hardware
     app.route('/get/cayenne')
         .post(integrate.getCayenne);
+    app.route('/save/cayenne')
+        .post(integrate.saveCayenne);
 
     // Intelligent Monitoring System
     app.route('/get/beacon')

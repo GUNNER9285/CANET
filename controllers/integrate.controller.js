@@ -9,6 +9,33 @@ exports.getCayenne = function(req, res) {
     console.log(payload);
 };
 
+exports.saveCayenne = function(req, res) {
+    var payload = req.body['DevEUI_uplink']['payload_hex'];
+    var pt = 0;
+    var temp = 0;
+    var humi = 0;
+    var pIn = 0;
+    var pOut = 0;
+    while (true){
+        if(pt == payload.length-1 || pt == payload.length-2
+            || pt == payload.length-3 || pt == payload.length-4
+            || pt == payload.length-5){
+            break;
+        }
+        pt = pt + 2;
+        if(pt == '6' && pt+1 == '7'){
+            var hex = payload[pt+2]+payload[pt+3]+payload[pt+4]+payload[pt+5];
+            temp = parseInt(hex, 16)/10;
+            pt = pt+6;
+        }
+        else if(pt == '6' && pt+1 == '8'){
+            var hex = payload[pt+2]+payload[pt+3]+payload[pt+4]+payload[pt+5];
+            humi = parseInt(hex, 16)/10;
+            pt = pt+6;
+        }
+    }
+};
+
 exports.getBeacon = function(req, res) {
     var beacon = req.body;
     console.log(beacon);
