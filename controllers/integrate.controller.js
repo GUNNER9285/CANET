@@ -71,7 +71,7 @@ exports.saveBeacon = function(req, res) {
                 db.beaconData.insert({
                     date: datetime[0],
                     time: times
-                }, async function (err, docs) {
+                }, function (err, docs) {
                     if (docs != null) {
                         var result = {
                             datetime: beacon['datetime'],
