@@ -54,13 +54,17 @@ exports.saveCayenne = function(req, res) {
         }
     }
     var json = {
-        temp: temp,
-        humi: humi,
-        pIn: pIn,
-        pOut: pOut,
-        Timestamp: Timestamp
+        "Temperature": temp,
+        "Humidity": humi,
+        "P-IN": pIn,
+        "P-OUT": pOut,
+        "Timestamp": Timestamp
     };
     console.log(json);
+
+    db.sensorData.insert(json, function (err, docs) {
+        res.send(docs)
+    })
 };
 
 exports.getBeacon = function(req, res) {
