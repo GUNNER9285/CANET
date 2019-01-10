@@ -14,5 +14,7 @@ module.exports = function(app) {
         .get(integrate.showBeacon);
     app.route('/delete/beacon')
         .delete(integrate.deleteBeacon);
+    app.route('/show/csv')
+        .get(integrate.showCsv);
 
 };

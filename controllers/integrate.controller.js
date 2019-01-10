@@ -1,6 +1,7 @@
 var fs = require("fs"),
     mongojs = require('../db'),
-    db = mongojs.connect;
+    db = mongojs.connect,
+    csv = require("fast-csv");
 
 exports.getCayenne = function(req, res) {
     var payload = req.body;
@@ -17,6 +18,7 @@ exports.saveBeacon = function(req, res) {
     console.log(beacon);
     if(beacon['status'] == 'enter'){
         var datetime = beacon['datetime'].split(" "); // [0] = date, [1] = time
+        console.log(date);
         db.beaconData.find({
             date: datetime[0]
         }, function (err, docs) {
@@ -79,3 +81,22 @@ exports.deleteBeacon = function(req, res) {
         res.send(docs);
     });
 };
+
+exports.readCsv = function(req, res){
+
+};
+
+async function readCSV() {
+    return new Promise(function (resolve, reject) {
+        csv
+            .fromPath('THB.csv')
+            .on("data", function (str) {
+                data.push(str);
+            })
+            .on("end", function () {
+
+                //console.log(data.length);
+                resolve(data);
+            });
+    });
+}
