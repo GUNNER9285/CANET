@@ -6,6 +6,8 @@ module.exports = function(app) {
         .post(integrate.getCayenne);
     app.route('/save/cayenne')
         .post(integrate.saveCayenne);
+    app.route('/show/cayenne')
+        .get(integrate.showCayenne);
 
     // Intelligent Monitoring System
     app.route('/get/beacon')

@@ -67,6 +67,12 @@ exports.saveCayenne = function(req, res) {
     })
 };
 
+exports.showCayenne = function(req, res){
+    db.sensorData.find({},  function (err, docs) {
+        res.json(docs);
+    });
+};
+
 exports.getBeacon = function(req, res) {
     var beacon = req.body;
     console.log(beacon);
