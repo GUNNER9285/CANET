@@ -52,7 +52,7 @@ exports.saveCayenne = function(req, res) {
         humi: humi,
         Timestamp: Timestamp
     };
-    res.json(json);
+    console.log(json);
 };
 
 exports.getBeacon = function(req, res) {
