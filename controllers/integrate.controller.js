@@ -8,7 +8,6 @@ exports.getCayenne = function(req, res) {
     var payload = req.body;
     console.log(payload);
 };
-
 exports.saveCayenne = function(req, res) {
     var payload = req.body['DevEUI_uplink']['payload_hex'];
     var pt = 0;
@@ -66,7 +65,6 @@ exports.saveCayenne = function(req, res) {
         res.send(docs)
     })
 };
-
 exports.showCayenne = function(req, res){
     db.sensorData.find({},  function (err, docs) {
         res.json(docs);
