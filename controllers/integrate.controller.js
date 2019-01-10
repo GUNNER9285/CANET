@@ -107,6 +107,8 @@ exports.saveBeacon = function(req, res) {
                     }
                 }, async function (err, docs) {
                     if (docs != null) {
+                        await getEnter(datetime);
+                        await getLeave(datetime);
                         var result = {
                             datetime: beacon['datetime'],
                             enter: p_in,
