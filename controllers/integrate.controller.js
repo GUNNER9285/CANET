@@ -23,7 +23,6 @@ exports.saveBeacon = function(req, res) {
             date: datetime[0]
         }, function (err, docs) {
             console.log(docs);
-            console.log(typeof docs);
             /*
             console.log(docs.length);
 
