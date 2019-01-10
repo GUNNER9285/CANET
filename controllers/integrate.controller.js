@@ -23,8 +23,10 @@ exports.saveBeacon = function(req, res) {
             date: datetime[0]
         }, function (err, docs) {
             console.log(docs);
-            console.log(docs.length);
+            console.log(typeof docs);
             /*
+            console.log(docs.length);
+
             if (docs.length != 0) {
                 console.log('found');
                 var hours = parseInt(datetime[1][0]+datetime[1][1]);
