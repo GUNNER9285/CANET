@@ -28,12 +28,13 @@ exports.saveCayenne = function(req, res) {
         pt = pt + 2;
         if(pt == '6' && pt+1 == '7'){
             var hex = payload[pt+2]+payload[pt+3]+payload[pt+4]+payload[pt+5];
+            console.log('hex: ',hex);
             temp = parseInt(hex, 16)/10;
             pt = pt+6;
         }
         else if(pt == '6' && pt+1 == '8'){
             var hex = payload[pt+2]+payload[pt+3];
-            humi = parseInt(hex, 16)/10;
+            humi = parseInt(hex, 16)/2;
             pt = pt+4;
         }
         else if(pt == '0' && pt+1 == '1'){
@@ -50,6 +51,8 @@ exports.saveCayenne = function(req, res) {
     var json = {
         temp: temp,
         humi: humi,
+        pIn: pIn,
+        pOut: pOut,
         Timestamp: Timestamp
     };
     console.log(json);
