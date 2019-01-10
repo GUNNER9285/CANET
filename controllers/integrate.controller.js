@@ -18,8 +18,7 @@ exports.saveCayenne = function(req, res) {
     var pOut = 0;
     while (true){
         if(pt == payload.length-1 || pt == payload.length-2
-            || pt == payload.length-3 || pt == payload.length-4
-            || pt == payload.length-5){
+            || pt == payload.length-3 || pt == payload.length-4){
             break;
         }
         pt = pt + 2;
@@ -29,10 +28,16 @@ exports.saveCayenne = function(req, res) {
             pt = pt+6;
         }
         else if(pt == '6' && pt+1 == '8'){
-            var hex = payload[pt+2]+payload[pt+3]+payload[pt+4]+payload[pt+5];
+            var hex = payload[pt+2]+payload[pt+3];
             humi = parseInt(hex, 16)/10;
-            pt = pt+6;
+            pt = pt+4;
         }
+
+        var json = {
+            temp: temp,
+            humi: humi
+        };
+        res.json(json);
     }
 };
 
@@ -41,160 +46,151 @@ exports.getBeacon = function(req, res) {
     console.log(beacon);
 };
 
-var p_in = 0;
-var p_out = 0;
-
 exports.saveBeacon = function(req, res) {
     var beacon = req.body['beacon'];
+    var datetime = beacon['datetime'];
     console.log(beacon);
     if(beacon['status'] == 'enter'){
-        var datetime = beacon['datetime'].split(" "); // [0] = date, [1] = time
-        console.log(datetime);
-        db.beaconData.find({
-            date: datetime[0]
+        db.beaconData.insert({
+            "P-IN": 1,
+            "P-OUT": 0,
+            Timestamp: datetime
         }, function (err, docs) {
-            if (docs.length != 0) {
-                console.log('found');
-                var hours = parseInt(datetime[1][0]+datetime[1][1]);
-                console.log(hours);
-                var times = docs[0]['time'];
-                times[hours] = (parseInt(times[hours]) + 1) + '';
-                db.beaconData.update({
-                    date: datetime[0]
+            db.beaconCount.find({}, function (err, docs) {
+                var count = parseInt(docs[0]["COUNT-IN"]);
+                count++;
+                db.beaconCount.update({
+                    "status": "enter"
                 },{
-                    $set:{
-                        time: times
+                    $set: {
+                        "COUNT-IN": count
                     }
-                },async function (err, docs) {
-                    if (docs != null) {
-                        await getEnter(datetime);
-                        await getLeave(datetime);
-                        var result = {
-                            datetime: beacon['datetime'],
-                            enter: p_in,
-                            leave: p_out
-                        };
-                        res.json(result);
-                    } else {
-                        res.send('Beacon Data Not Found !');
-                    }
+                }, function (err, docs) {
+                    res.send(docs);
                 });
-            } else {
-                console.log('beaconData not found');
-                var hours = parseInt(datetime[1][0]+datetime[1][1]);
-                var times = ["0","0","0","0","0","0",
-                    "0","0","0","0","0","0",
-                    "0","0","0","0","0","0",
-                    "0","0","0","0","0","0"];
-                if(hours[0] == "0"){
-                    times[parseInt(datetime[1][1])] = "1";
-                } else {
-                    times[hours] = "1";
-                }
-                db.beaconData.insert({
-                    date: datetime[0],
-                    time: times
-                }, async function (err, docs) {
-                    if (docs != null) {
-                        await getEnter(datetime);
-                        await getLeave(datetime);
-                        var result = {
-                            datetime: beacon['datetime'],
-                            enter: p_in,
-                            leave: p_out
-                        };
-                        res.json(result);
-                    } else {
-                        res.send('Beacon Data Not Found !');
-                    }
-                });
-            }
+            })
         });
-    } else{
-        var datetime = beacon['datetime'].split(" "); // [0] = date, [1] = time
-        console.log(datetime);
-        db.beaconData2.find({
-            date: datetime[0]
+    }
+    else{
+        db.beaconData.insert({
+            "P-IN": 0,
+            "P-OUT": 1,
+            Timestamp: datetime
         }, function (err, docs) {
-            if (docs.length != 0) {
-                console.log('found');
-                var hours = parseInt(datetime[1][0]+datetime[1][1]);
-                console.log(hours);
-                var times = docs[0]['time'];
-                times[hours] = (parseInt(times[hours]) + 1) + '';
-                db.beaconData2.update({
-                    date: datetime[0]
+            db.beaconCount.find({}, function (err, docs) {
+                var count = parseInt(docs[1]["COUNT-OUT"]);
+                count++;
+                db.beaconCount.update({
+                    "status": "leave"
                 },{
-                    $set:{
-                        time: times
+                    $set: {
+                        "COUNT-OUT": count
                     }
-                }, async function (err, docs) {
-                    if (docs != null) {
-                        await getEnter(datetime);
-                        await getLeave(datetime);
-                        var result = {
-                            datetime: beacon['datetime'],
-                            enter: p_in,
-                            leave: p_out
-                        };
-                        res.json(result);
-                    } else {
-                        res.send('Beacon Data Not Found !');
-                    }
+                }, function (err, docs) {
+                    res.send(docs);
                 });
-            } else {
-                console.log('beaconData not found');
-                var hours = parseInt(datetime[1][0]+datetime[1][1]);
-                var times = ["0","0","0","0","0","0",
-                    "0","0","0","0","0","0",
-                    "0","0","0","0","0","0",
-                    "0","0","0","0","0","0"];
-                if(hours[0] == "0"){
-                    times[parseInt(datetime[1][1])] = "1";
-                } else {
-                    times[hours] = "1";
-                }
-                db.beaconData2.insert({
-                    date: datetime[0],
-                    time: times
-                }, async function (err, docs) {
-                    if (docs != null) {
-                        await getEnter(datetime);
-                        await getLeave(datetime);
-                        var result = {
-                            datetime: beacon['datetime'],
-                            enter: p_in,
-                            leave: p_out
-                        };
-                        res.json(result);
-                    } else {
-                        res.send('Beacon Data Not Found !');
-                    }
-                });
-            }
+            })
         });
-
     }
 };
 
-async function getEnter(datetime){
+exports.initcountEN = function(req, res){
+    db.beaconCount.insert({
+        "COUNT-IN": 0,
+        "status": "enter"
+    }, function (err, docs) {
+        res.send(docs);
+    });
+};
+
+exports.initcountLE = function(req, res){
+    db.beaconCount.insert({
+        "COUNT-OUT": 0,
+        "status": "leave"
+    }, function (err, docs) {
+        res.send(docs);
+    });
+};
+
+exports.countBeacon = function(req, res){
+    db.beaconCount.find({}, function (err, docs) {
+        res.send(docs);
+    });
+};
+
+exports.delCountBeacon = function(req, res){
+    db.beaconCount.remove({}, function (err, docs) {
+        res.send(docs);
+    });
+};
+
+exports.getHours = function (req, res) {
+    db.schedule.find({}, function (err, docs) {
+        var times = [];
+        for (var i in docs){
+            for (let j=0; j<docs[i]['times'].length; j++){
+                times.push(docs[i]['times'][j]);
+            }
+        }
+        var tourist = [];
+        var len_times = times.length;
+        var len = req.params.X;
+        if(len <= 0 || len > len_times){
+            res.send("Error");
+        }
+        else{
+            for (let i=0; i<len; i++){
+                tourist.push(times.pop())
+            }
+            var json = {
+                "number_of_tourist": tourist.reverse()
+            }
+            res.json(json);
+        }
+    });
+};
+
+function getDateTime() {
+    var date = new Date(Date.now());
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var hours = date.getHours();
+    var minutes = "0" + date.getMinutes();
+    var seconds = "0" + date.getSeconds();
+    var formattedTime = year + '-' + month + '-' + day + ' '
+        + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+    return formattedTime;
+}
+
+var p_in = 0;
+var p_out = 0;
+exports.readCountBeacon = async function(req, res) {
+    await getEnter();
+    await getLeave();
+    var json = {
+        "enter": p_in,
+        "leave": p_out
+    };
+    res.json(json);
+};
+
+async function getEnter(){
     return new Promise(function (resolve, reject) {
-        db.beaconData.find({
-            date: datetime[0]
+        db.beaconCount.find({
+            "status": "enter"
         }, function (err, docs) {
-            var hour = parseInt(datetime[1][0]+datetime[1][1]);
-            p_in = docs[0]['time'][hour];
+            p_in = docs[0]['COUNT-IN'];
             resolve(p_in);
         });
     });
 }
-async function getLeave(datetime){
+async function getLeave(){
     return new Promise(function (resolve, reject) {
-        db.beaconData2.find({
-            date: datetime[0]
+        db.beaconCount.find({
+            "status": "leave"
         }, function (err, docs) {
-            var hour = parseInt(datetime[1][0]+datetime[1][1]);
-            p_out = docs[0]['time'][hour];
+            p_out = docs[0]['COUNT-OUT'];
             resolve(p_out);
         });
     });
@@ -243,46 +239,32 @@ async function readCSV() {
     });
 }
 
-exports.getHours = function (req, res) {
-    db.beaconData.find({}, function (err, docs) {
-        var present = getDateTime(Date.now());
-        console.log(present);
-        var date = present.split(" ");
-        var day = 0;
-        if(date[0][date[0].length-2] == "-"){
-            day = parseInt(date[0][date[0].length-1]);
-        }
-        else{
-            day = parseInt(date[0][date[0].length-2]+date[0][date[0].length-1]);
-        }
-        var hour = 0;
-        if(date[1][0] == "0"){
-            hour = parseInt(date[1][1]);
-        } else {
-            hour = parseInt(date[1][0]+date[1][1]);
-        }
-        var x = req.params.X;
-        res.send(x);
-
+exports.readSchedule = function (req, res) {
+    db.schedule.find({}, function (err, docs) {
+        res.send(docs);
+    });
+};
+exports.deleteSchedule = function (req, res) {
+    db.schedule.remove({}, function (err, docs) {
+        res.send(docs);
     });
 };
 
-function getDateTime() {
-    var date = new Date(Date.now());
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var day = date.getDay();
-    var hours = date.getHours();
-    var minutes = "0" + date.getMinutes();
-    var seconds = "0" + date.getSeconds();
-    var formattedTime = year + '-' + month + '-' + day + ' '
-        + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    return formattedTime;
-}
-
-exports.initBeacon = function (req, res) {
-    console.log("init beacon...");
+exports.createSchedule = function (req, res) {
+    var tmp = ["0"];
+    var id = req.params.id;
+    for(let i=1; i<id-1; i++){
+        tmp.push("0");
+    }
+    db.schedule.insert({
+        date: '2019-1-11',
+        times: tmp
+    }, function (err, docs) {
+        res.send(docs);
+    });
 };
+
+
 
 // Test Async
 var raw = "";

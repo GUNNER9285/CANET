@@ -12,12 +12,27 @@ module.exports = function(app) {
         .post(integrate.getBeacon);
     app.route('/save/beacon')
         .post(integrate.saveBeacon);
+    app.route('/readcount/beacon')
+        .post(integrate.readCountBeacon);
     app.route('/show/beacon')
         .get(integrate.showBeacon);
     app.route('/delete/beacon')
         .delete(integrate.deleteBeacon);
-    app.route('/init/beacon')
-        .post(integrate.initBeacon);
+    app.route('/count/beacon')
+        .get(integrate.countBeacon);
+    app.route('/delcount/beacon')
+        .delete(integrate.delCountBeacon);
+    app.route('/initcount/en')
+        .get(integrate.initcountEN);
+    app.route('/initcount/le')
+        .get(integrate.initcountLE);
+
+    app.route('/read/schedule')
+        .get(integrate.readSchedule);
+    app.route('/delete/schedule')
+        .delete(integrate.deleteSchedule);
+    app.route('/create/schedule/:id')
+        .get(integrate.createSchedule);
 
     app.route('/show/csv')
         .get(integrate.showCsv);
@@ -27,3 +42,4 @@ module.exports = function(app) {
         .get(integrate.getRequest);
 
 };
+
