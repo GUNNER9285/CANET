@@ -77,8 +77,8 @@ exports.saveBeacon = function(req, res) {
                         await getLeave(datetime);
                         var result = {
                             datetime: beacon['datetime'],
-                            enter: p_in,
-                            leave: p_out
+                            enter: "1",
+                            leave: "0"
                         };
                         res.json(result);
                     } else {
@@ -107,8 +107,6 @@ exports.saveBeacon = function(req, res) {
                     }
                 }, async function (err, docs) {
                     if (docs != null) {
-                        await getEnter(datetime);
-                        await getLeave(datetime);
                         var result = {
                             datetime: beacon['datetime'],
                             enter: p_in,
@@ -136,12 +134,10 @@ exports.saveBeacon = function(req, res) {
                     time: times
                 }, async function (err, docs) {
                     if (docs != null) {
-                        await getEnter(datetime);
-                        await getLeave(datetime);
                         var result = {
                             datetime: beacon['datetime'],
-                            enter: p_in,
-                            leave: p_out
+                            enter: "0",
+                            leave: "1"
                         };
                         res.json(result);
                     } else {
