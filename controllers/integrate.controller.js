@@ -67,10 +67,6 @@ exports.saveBeacon = function(req, res) {
                     }
                 },async function (err, docs) {
                     if (docs != null) {
-                        /*
-                        console.log('found', JSON.stringify(docs));
-                        res.json(docs);
-                        */
                         await getEnter(datetime);
                         await getLeave(datetime);
                         var result = {
@@ -98,12 +94,14 @@ exports.saveBeacon = function(req, res) {
                 db.beaconData.insert({
                     date: datetime[0],
                     time: times
-                }, function (err, docs) {
+                }, async function (err, docs) {
                     if (docs != null) {
+                        await getEnter(datetime);
+                        await getLeave(datetime);
                         var result = {
                             datetime: beacon['datetime'],
-                            enter: "1",
-                            leave: "0"
+                            enter: p_in,
+                            leave: p_out
                         };
                         res.json(result);
                     } else {
@@ -159,12 +157,14 @@ exports.saveBeacon = function(req, res) {
                 db.beaconData2.insert({
                     date: datetime[0],
                     time: times
-                }, function (err, docs) {
+                }, async function (err, docs) {
                     if (docs != null) {
+                        await getEnter(datetime);
+                        await getLeave(datetime);
                         var result = {
                             datetime: beacon['datetime'],
-                            enter: "0",
-                            leave: "1"
+                            enter: p_in,
+                            leave: p_out
                         };
                         res.json(result);
                     } else {
