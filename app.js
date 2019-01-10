@@ -17,9 +17,10 @@ app.listen(port);
 setInterval(function(){
     var datetime = getDateTime().split(" ");
     var time = datetime[1].split(":");
+    var hr = time[0];
     var min = time[1];
     var sec = time[2];
-    var hr = time[0];
+
     if(hr == '00' && min=='00' && sec=='00'){ // Midnight hr == '00' && min=='00' && sec=='00'
         db.schedule.insert({
             date: datetime[0],
