@@ -1,7 +1,8 @@
 var fs = require("fs"),
     mongojs = require('../db'),
     db = mongojs.connect,
-    csv = require("fast-csv");
+    csv = require("fast-csv"),
+    request = require('request');
 
 exports.getCayenne = function(req, res) {
     var payload = req.body;
@@ -81,17 +82,19 @@ exports.deleteBeacon = function(req, res) {
         res.send(docs);
     });
 };
+
 var data = [];
 exports.showCsv = async function(req, res){
     data = [];
     await readCSV();
     var times = [];
-    console.log(data.length);
-    for(let i = 1; i < data.length; i++){
+    for(let i = 0; i < data.length; i++){
         var hours = data[i][0].split(";");
-        for(let j = 1; j < hours.length; j++){
-            times.push(parseInt(hours[j]));
+        var time = [];
+        for(let j = 0; j < hours.length; j++){
+            time.push(hours[j]);
         }
+        times.push(time);
     }
     res.json(times);
 };
@@ -127,4 +130,23 @@ function getDateTime() {
     var formattedTime = year + '-' + month + '-' + day + ' '
         + hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
     return formattedTime;
+}
+
+var why = "";
+exports.getRequest = async function (req, res) {
+    await readCsv2();
+    console.log(why);
+};
+
+async function readCsv2() {
+    return new Promise(function (resolve, reject) {
+        request({
+            headers: {'content-type' : 'application/json'},
+            url: 'http://202.139.192.79:3000/show/csv',
+            method: 'GET'
+        }, function(error, response, body){
+            why = JSON.parse(body);
+            resolve(why);
+        });
+    });
 }

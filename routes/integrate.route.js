@@ -17,9 +17,9 @@ module.exports = function(app) {
 
     app.route('/show/csv')
         .get(integrate.showCsv);
-    app.route('/show/csv')
-        .get(integrate.showCsv);
     app.route('/get/hours/:X')
         .get(integrate.getHours);
+    app.route('/get/request')
+        .get(integrate.getRequest);
 
 };
