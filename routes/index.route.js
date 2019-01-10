@@ -57,4 +57,7 @@ module.exports = function(app) {
     app.route('/deleteData/:teamID')
         .delete(index.deleteDataById);
 
+    app.route('/get/cayenne')
+        .get(index.getCayenne);
+
 };

@@ -3,7 +3,7 @@ var fs = require("fs"),
     db = mongojs.connect;
 
 exports.getIndex = function(req, res) {
-    var msg = "Team: CANET "+ Date.now;
+    var msg = "Team: CANET";
     res.send(msg);
 };
 
@@ -129,4 +129,9 @@ exports.deleteDataById = function(req, res) {
         console.log(docs);
         res.send(docs);
     });
+};
+
+exports.getCayenne = function(req, res) {
+    var payload = req.body['DevEUI_uplink']['payload_hex'];
+    console.log(payload);
 };
