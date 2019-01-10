@@ -131,7 +131,3 @@ exports.deleteDataById = function(req, res) {
     });
 };
 
-exports.getCayenne = function(req, res) {
-    var payload = req.body['DevEUI_uplink']['payload_hex'];
-    console.log(payload);
-};

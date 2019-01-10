@@ -1,17 +1,15 @@
 module.exports = function(app) {
     var index = require('../controllers/index.controller');
 
+    // Day 1
     app.route('/')
         .get(index.getIndex);
-
     // show all users
     app.route('/listUsers')
         .get(index.getListUsers);
-
     // show user by id
     app.route('/showbyID/:id')
         .get(index.getShowById);
-
     // add one user
     /*
     {
@@ -41,11 +39,11 @@ module.exports = function(app) {
     */
     app.route('/addMultiUser')
         .post(index.postAddMultiUser);
-
     // delete user
     app.route('/deleteUser/:id')
         .delete(index.deleteUser);
 
+    // Day 2
     app.route('/receiveData')
         .post(index.receiveData);
     app.route('/showData')
@@ -56,8 +54,4 @@ module.exports = function(app) {
         .put(index.editDataById);
     app.route('/deleteData/:teamID')
         .delete(index.deleteDataById);
-
-    app.route('/get/cayenne')
-        .get(index.getCayenne);
-
 };
