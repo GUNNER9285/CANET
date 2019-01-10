@@ -280,6 +280,9 @@ function getDateTime() {
     return formattedTime;
 }
 
+exports.initBeacon = function (req, res) {
+    console.log("init beacon...");
+};
 
 // Test Async
 var raw = "";
