@@ -19,6 +19,7 @@ exports.saveCayenne = function(req, res) {
     var Timestamp = getDateTime();
     console.log("Timestamp: ", Timestamp);
     console.log("Payload_Hex: ", payload);
+    var next = 0;
     while (true){
         if(pt == payload.length-1 || pt == payload.length-2
             || pt == payload.length-3 || pt == payload.length-4
@@ -26,25 +27,29 @@ exports.saveCayenne = function(req, res) {
             break;
         }
         pt = pt + 2;
-        if(pt == '6' && pt+1 == '7'){
+        if(payload[pt] == '6' && payload[pt+1] == '7'){
             var hex = payload[pt+2]+payload[pt+3]+payload[pt+4]+payload[pt+5];
-            console.log('hex: ',hex);
+            console.log('temp: ',hex);
             temp = parseInt(hex, 16)/10;
             pt = pt+6;
         }
-        else if(pt == '6' && pt+1 == '8'){
+        else if(payload[pt] == '6' && payload[pt+1] == '8'){
             var hex = payload[pt+2]+payload[pt+3];
+            console.log('humi: ',hex);
             humi = parseInt(hex, 16)/2;
             pt = pt+4;
         }
-        else if(pt == '0' && pt+1 == '1'){
+        else if(payload[pt] == '0' && payload[pt+1 == '1'] && next == 0){
             var hex = payload[pt+2]+payload[pt+3];
-            pIn = parseInt(hex, 16)/10;
+            console.log('pIn: ',hex);
+            pIn = parseInt(hex, 16);
             pt = pt+2;
+            next = 1;
         }
-        else if(pt == '0' && pt+1 == '1'){
+        else if(payload[pt] == '0' && payload[pt+1 == '1']){
             var hex = payload[pt+2]+payload[pt+3];
-            pOut = parseInt(hex, 16)/10;
+            console.log('pOut: ',hex);
+            pOut = parseInt(hex, 16);
             pt = pt+2;
         }
     }
