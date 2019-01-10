@@ -18,7 +18,7 @@ exports.saveBeacon = function(req, res) {
     console.log(beacon);
     if(beacon['status'] == 'enter'){
         var datetime = beacon['datetime'].split(" "); // [0] = date, [1] = time
-        console.log(date);
+        console.log(datetime);
         db.beaconData.find({
             date: datetime[0]
         }, function (err, docs) {
