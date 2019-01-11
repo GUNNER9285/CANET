@@ -113,7 +113,7 @@ exports.saveBeacon = function(req, res) {
             Timestamp: datetime
         }, function (err, docs) {
             db.beaconCount.find({"status": "leave"}, function (err, docs) {
-                var count = parseInt(docs[1]["COUNT-OUT"]);
+                var count = parseInt(docs[0]["COUNT-OUT"]);
                 count++;
                 db.beaconCount.update({
                     "status": "leave"
