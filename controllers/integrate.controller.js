@@ -58,11 +58,11 @@ exports.saveCayenne = function(req, res) {
         "Timestamp": Timestamp
     };
     console.log(json);
-/*
+
     db.sensorData.insert(json, function (err, docs) {
         res.send(docs)
     })
-*/
+
 };
 exports.showCayenne = function(req, res){
     db.sensorData.find({},  function (err, docs) {
