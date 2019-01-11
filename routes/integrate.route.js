@@ -35,6 +35,8 @@ module.exports = function(app) {
         .delete(integrate.deleteSchedule);
     app.route('/create/schedule/:id')       // 3
         .get(integrate.createSchedule);
+    app.route('/add/schedule')
+        .get(integrate.addSchedule);
 
     app.route('/show/csv')
         .get(integrate.showCsv);
@@ -42,6 +44,7 @@ module.exports = function(app) {
         .get(integrate.getHours);
     app.route('/get/request')
         .get(integrate.getRequest);
+
 
 };
 

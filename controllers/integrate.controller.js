@@ -291,6 +291,23 @@ exports.createSchedule = function (req, res) {
         res.send(docs);
     });
 };
+exports.addSchedule = function (req, res) {
+    db.schedule.find({
+        date: '2019-1-11'
+    }, function (err, docs) {
+        var times = docs[0]['times'];
+        times.push("0");
+        db.schedule.update({
+            date: '2019-1-11'
+        },{
+            $set: {
+                times: times
+            }
+        }, function (err, docs) {
+            res.send(docs);
+        });
+    });
+};
 
 // Test Async
 var raw = "";
