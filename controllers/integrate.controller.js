@@ -40,14 +40,14 @@ exports.saveCayenne = function(req, res) {
             var hex = payload[pt+2]+payload[pt+3];
             console.log('pIn: ',hex);
             pIn = parseInt(hex, 16);
-            pt = pt+2;
+            pt = pt+4;
             next = 1;
         }
         else if(payload[pt] == '0' && payload[pt+1 == '1']){
             var hex = payload[pt+2]+payload[pt+3];
             console.log('pOut: ',hex);
             pOut = parseInt(hex, 16);
-            pt = pt+2;
+            pt = pt+4;
         }
     }
     var json = {
