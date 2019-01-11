@@ -20,9 +20,7 @@ exports.saveCayenne = function(req, res) {
     console.log("Payload_Hex: ", payload);
     var next = 0;
     while (true){
-        if(pt == payload.length-1 || pt == payload.length-2
-            || pt == payload.length-3 || pt == payload.length-4
-            || pt >= payload.length){
+        if(pt >= payload.length){
             break;
         }
         pt = pt + 2;
@@ -60,10 +58,11 @@ exports.saveCayenne = function(req, res) {
         "Timestamp": Timestamp
     };
     console.log(json);
-
+/*
     db.sensorData.insert(json, function (err, docs) {
         res.send(docs)
     })
+*/
 };
 exports.showCayenne = function(req, res){
     db.sensorData.find({},  function (err, docs) {
