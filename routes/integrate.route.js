@@ -28,6 +28,8 @@ module.exports = function(app) {
         .get(integrate.initcountEN);    // 1
     app.route('/initcount/le')
         .get(integrate.initcountLE);    // 2
+    app.route('/edit/beacon')
+        .get(integrate.editBeacon);
 
     app.route('/read/schedule')
         .get(integrate.readSchedule);

@@ -160,6 +160,25 @@ exports.delCountBeacon = function(req, res){
         res.send(docs);
     });
 };
+exports.editBeacon = function(req, res){
+    db.beaconCount.update({
+        "status": "enter"
+    },{
+      $set:{
+          "COUNT-IN": 0
+      }
+    }, function (err, docs) {
+        db.beaconCount.update({
+            "status": "leave"
+        },{
+            $set:{
+                "COUNT-OUT": 0
+            }
+        }, function (err, docs) {
+            res.send(docs);
+        });
+    });
+};
 
 exports.getHours = function (req, res) {
     db.schedule.find({}, function (err, docs) {
