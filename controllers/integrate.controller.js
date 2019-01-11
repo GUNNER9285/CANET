@@ -157,7 +157,7 @@ exports.countBeacon = function(req, res){
     });
 };
 exports.delCountBeacon = function(req, res){
-    db.beaconCount.remove({"date": "2019-1-4"}, function (err, docs) {
+    db.beaconData.remove({"date": "2019-1-4"}, function (err, docs) {
         res.send(docs);
     });
 };
@@ -204,7 +204,7 @@ function getDateTime() {
 var p_in = 0;
 var p_out = 0;
 exports.readCountBeacon = async function(req, res) {
-    db.beaconCount.find({}, function (err, docs) {
+    db.beaconData.find({}, function (err, docs) {
         res.send(docs);
     })
 };
